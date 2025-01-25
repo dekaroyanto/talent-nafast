@@ -87,6 +87,7 @@ class TalentController extends Controller
      */
     public function destroy(Talent $talent)
     {
-        //
+        $talent->delete();
+        return redirect()->route('talent.index')->with('success', 'Talent deleted successfully.');
     }
 }

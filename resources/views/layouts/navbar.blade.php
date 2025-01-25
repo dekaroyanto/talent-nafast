@@ -73,7 +73,8 @@
                         <ul class="pc-submenu">
                             <li class="pc-item"><a class="pc-link" href="{{ route('talent.index') }}">Daftar Talent</a>
                             </li>
-                            <li class="pc-item"><a class="pc-link" href="#!">Tambah Talent</a></li>
+                            <li class="pc-item"><a class="pc-link" href="{{ route('sesi-talent.index') }}">Sesi
+                                    Talent</a></li>
                         </ul>
                     </li>
                     <li class="pc-item">
@@ -126,11 +127,9 @@
                         <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                             <div class="dropdown-header">
                                 <h4>
-                                    Hello,
-                                    <span class="small text-muted">{{ Auth::user()->name }}</span>
+                                    Hello, {{ Auth::user()->name }}!
                                 </h4>
-                                <p class="text-muted">{{ Auth::user()->role }}</p>
-                                <hr />
+                                {{-- <p class="text-muted">{{ Auth::user()->role }}</p> --}}
                                 <div class="profile-notification-scroll position-relative"
                                     style="max-height: calc(100vh - 280px)">
                                     <a href="{{ route('profile.edit') }}" class="dropdown-item">

@@ -11,7 +11,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-striped">
+                    <table class="table table-striped text-center">
                         <thead>
                             <tr>
                                 <td>Nama Talent</td>
@@ -26,9 +26,16 @@
                                     <td>{{ $talent->nama_talent }}</td>
                                     <td>{{ 'Rp ' . number_format($talent->fee_live_perjam, 0, ',', '.') }}</td>
                                     <td>{{ 'Rp ' . number_format($talent->fee_take_video_perjam, 0, ',', '.') }}</td>
-                                    <td>
-                                        <button class="btn btn-primary" data-bs-toggle="modal"
+                                    <td class="d-flex gap-2 justify-content-center">
+                                        <button class="btn btn-secondary" data-bs-toggle="modal"
                                             data-bs-target="#editModal{{ $talent->id }}">Edit</button>
+
+                                        <form action="{{ route('talent.destroy', $talent) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger"
+                                                onclick="return confirm('Apakah Anda yakin ingin menghapus talent ini?')">Hapus</button>
+                                        </form>
                                     </td>
                                 </tr>
                             @empty
