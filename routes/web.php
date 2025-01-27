@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TalentController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GajiTalentController;
 use App\Http\Controllers\SesiTalentController;
 
 Route::get('/', function () {
@@ -33,6 +34,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/sesi-talent/{sesiTalent}/edit', [SesiTalentController::class, 'edit'])->name('sesi-talent.edit');
     Route::put('/sesi-talent/{sesiTalent}', [SesiTalentController::class, 'update'])->name('sesi-talent.update');
     Route::delete('/sesi-talent/{sesiTalent}', [SesiTalentController::class, 'destroy'])->name('sesi-talent.destroy');
+
+    Route::resource('gaji-talent', GajiTalentController::class);
+    Route::post('gaji-talent/calculate-salary', [GajiTalentController::class, 'calculateSalary'])->name('gaji-talent.calculate-salary');
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });

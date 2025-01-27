@@ -38,11 +38,11 @@
                     <div class="tab-pane show active" id="chart-tab-home" role="tabpanel"
                         aria-labelledby="chart-tab-home-tab" tabindex="0">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-8">
                                 <span class="text-white d-block f-34 f-w-500 my-2">
                                     Rp.
                                 </span>
-                                <p class="mb-0 opacity-100">Total Fee Bulan Januari</p>
+                                <p class="mb-0 opacity-100">Total Omset Bulan Januari</p>
                             </div>
                         </div>
                     </div>

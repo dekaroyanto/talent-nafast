@@ -69,6 +69,7 @@ class SesiTalentController extends Controller
             'jenis_sesi' => 'required|in:take_video,live',
             'tanggal_waktu_mulai' => 'required|date',
             'tanggal_waktu_selesai' => 'nullable|date|after:tanggal_waktu_mulai',
+            'total_omset' => 'nullable|numeric',
         ]);
 
         // Update sesi talent
@@ -82,6 +83,7 @@ class SesiTalentController extends Controller
             $lamaSesi = $tanggalWaktuMulai->diffInMinutes($tanggalWaktuSelesai) / 60;
             $sesiTalent->update([
                 'lama_sesi' => round($lamaSesi, 2),
+                'total_omset' => $request->total_omset
             ]);
         }
 

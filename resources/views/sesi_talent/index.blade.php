@@ -34,48 +34,52 @@
                 </form>
             </div>
             <div class="card-body">
-                <table class="table table-striped text-center">
-                    <thead>
-                        <tr>
-                            <th>Nama Talent</th>
-                            <th>Jenis Sesi</th>
-                            <th>Tanggal Waktu Mulai</th>
-                            <th>Tanggal Waktu Selesai</th>
-                            <th>Lama Sesi (jam)</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        @forelse ($sesi as $item)
+                <div class="table-responsive">
+                    <table class="table table-striped text-center">
+                        <thead>
                             <tr>
-                                <td>{{ $item->talent->nama_talent }}</td>
-                                <td>{{ ucfirst($item->jenis_sesi) }}</td>
-                                <td>{{ \Carbon\Carbon::parse($item->tanggal_waktu_mulai)->format('d M Y H:i') }}</td>
-
-                                <td>{{ $item->tanggal_waktu_selesai ? \Carbon\Carbon::parse($item->tanggal_waktu_selesai)->format('d M Y H:i') : '-' }}
-                                </td>
-                                <td>{{ $item->lama_sesi ?? '-' }}</td>
-                                <td class="d-flex gap-2 justify-content-center">
-
-                                    @if (!$item->tanggal_waktu_selesai)
-                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#editSesiModal{{ $item->id }}">Edit</button>
-                                    @else
-                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#editSesiModal{{ $item->id }}">Edit</button>
-                                    @endif
-                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                        data-bs-target="#deleteSesiModal{{ $item->id }}">Hapus</button>
-                                </td>
+                                <th>Nama Talent</th>
+                                <th>Jenis Sesi</th>
+                                <th>Tanggal Waktu Mulai</th>
+                                <th>Tanggal Waktu Selesai</th>
+                                <th>Lama Sesi (jam)</th>
+                                <th>Total Omset</th>
+                                <th>Aksi</th>
                             </tr>
-                        @empty
-                            <tr class="text-center">
-                                <td colspan="6">Tidak ada data</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+
+                            @forelse ($sesi as $item)
+                                <tr>
+                                    <td>{{ $item->talent->nama_talent }}</td>
+                                    <td>{{ ucfirst($item->jenis_sesi) }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($item->tanggal_waktu_mulai)->format('d M Y H:i') }}</td>
+
+                                    <td>{{ $item->tanggal_waktu_selesai ? \Carbon\Carbon::parse($item->tanggal_waktu_selesai)->format('d M Y H:i') : '-' }}
+                                    </td>
+                                    <td>{{ $item->lama_sesi ?? '-' }}</td>
+                                    <td>{{ 'Rp ' . number_format($item->total_omset, 0, ',', '.') }}</td>
+                                    <td class="d-flex gap-2 justify-content-center">
+
+                                        @if (!$item->tanggal_waktu_selesai)
+                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#editSesiModal{{ $item->id }}">Edit</button>
+                                        @else
+                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#editSesiModal{{ $item->id }}">Edit</button>
+                                        @endif
+                                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#deleteSesiModal{{ $item->id }}">Hapus</button>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr class="text-center">
+                                    <td colspan="6">Tidak ada data</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -169,6 +173,12 @@
                                     <input type="datetime-local" name="tanggal_waktu_selesai" id="tanggal_waktu_selesai"
                                         class="form-control"
                                         value="{{ $item->tanggal_waktu_selesai ? \Carbon\Carbon::parse($item->tanggal_waktu_selesai)->format('Y-m-d\TH:i') : '' }}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="total_omset" class="form-label">Total Omset</label>
+                                    <input type="number" step="0.01" name="total_omset" id="total_omset"
+                                        class="form-control" value="{{ old('total_omset', $item->total_omset) }}"
+                                        required>
                                 </div>
                             </div>
                             <div class="modal-footer">

@@ -17,6 +17,7 @@ class SesiTalent extends Model
         'tanggal_waktu_mulai',
         'tanggal_waktu_selesai',
         'lama_sesi',
+        'total_omset',
     ];
 
     public function talent()
