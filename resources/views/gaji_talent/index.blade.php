@@ -23,6 +23,7 @@
                                 <th>Fee Take Video Didapat</th>
                                 <th>Jumlah Total Omset</th>
                                 <th>Rate Omset per Jam</th>
+                                <th>Bonus</th>
                                 <th>Total Gaji</th>
                                 <th>Action</th>
                             </tr>
@@ -42,6 +43,7 @@
                                     <td>Rp. {{ number_format($gaji->fee_take_video_didapat, 2) }}</td>
                                     <td>Rp. {{ number_format($gaji->jumlah_total_omset, 2) }}</td>
                                     <td>Rp. {{ number_format($gaji->rate_omset_perjam, 2) }}</td>
+                                    <td>Rp. {{ number_format($gaji->bonus, 2) }}</td>
                                     <td>Rp. {{ number_format($gaji->total_gaji, 2) }}</td>
                                     <td class="d-flex gap-2 justify-content-center">
                                         <!-- Action Buttons (Edit, Delete) -->

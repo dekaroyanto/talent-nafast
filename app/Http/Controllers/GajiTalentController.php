@@ -68,7 +68,6 @@ class GajiTalentController extends Controller
     {
         $talent = Talent::find($request->talent_id);
 
-        // Ambil data sesi talent berdasarkan periode yang dipilih
         $sesiLive = SesiTalent::where('talent_id', $request->talent_id)
             ->whereBetween('tanggal_waktu_mulai', [$request->periode_gaji_awal, $request->periode_gaji_akhir])
             ->where('jenis_sesi', 'live')
@@ -83,13 +82,13 @@ class GajiTalentController extends Controller
             ->whereBetween('tanggal_waktu_mulai', [$request->periode_gaji_awal, $request->periode_gaji_akhir])
             ->sum('total_omset');
 
-        // Menghitung fee dan total gaji, lalu membulatkan hasilnya
         $feeLiveDidapat = round($talent->fee_live_perjam * $sesiLive, 2);
         $feeTakeVideoDidapat = round($talent->fee_take_video_perjam * $sesiVideo, 2);
-        $rateOmsetPerJam = round(($omsetTotal / ($sesiLive ?: 1)), 2); // Pastikan tidak terjadi pembagian dengan 0
-        $totalGaji = round($feeLiveDidapat + $feeTakeVideoDidapat, 2);
+        $rateOmsetPerJam = round(($omsetTotal / ($sesiLive ?: 1)), 2);
 
-        // Mengirimkan response JSON dengan nilai yang sudah dibulatkan
+        $bonus = $request->bonus ?? 0; // Pastikan bonus ada (bisa dari input manual)
+        $totalGaji = round($feeLiveDidapat + $feeTakeVideoDidapat + $bonus, 2);
+
         return response()->json([
             'fee_live_perjam' => round($talent->fee_live_perjam, 2),
             'fee_take_video_perjam' => round($talent->fee_take_video_perjam, 2),

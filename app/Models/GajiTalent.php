@@ -21,6 +21,7 @@ class GajiTalent extends Model
         'fee_take_video_didapat',
         'jumlah_total_omset',
         'rate_omset_perjam',
+        'bonus',
         'total_gaji',
     ];
 

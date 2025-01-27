@@ -73,6 +73,12 @@
                     </div>
 
                     <div class="form-floating mb-2">
+                        <input type="number" name="bonus" id="bonus" class="form-control" step="0.01"
+                            value="0">
+                        <label for="bonus">Bonus</label>
+                    </div>
+
+                    <div class="form-floating mb-2">
                         <input type="number" name="total_gaji" id="total_gaji" class="form-control" readonly>
                         <label for="total_gaji">Total Gaji</label>
                     </div>
@@ -85,6 +91,15 @@
     </div>
 
     <script>
+        const calculateTotalSalary = () => {
+            const feeLiveDidapat = parseFloat(document.getElementById('fee_live_didapat').value) || 0;
+            const feeTakeVideoDidapat = parseFloat(document.getElementById('fee_take_video_didapat').value) || 0;
+            const bonus = parseFloat(document.getElementById('bonus').value) || 0;
+
+            const totalGaji = feeLiveDidapat + feeTakeVideoDidapat + bonus;
+            document.getElementById('total_gaji').value = totalGaji.toFixed(2);
+        };
+
         document.getElementById('talent_id').addEventListener('change', function() {
             const talent_id = this.value;
             const periode_awal = document.getElementById('periode_gaji_awal').value;
@@ -105,12 +120,9 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        // Pastikan data sudah diterima dan pastikan isi data dengan console.log jika perlu
-                        console.log(data); // Debugging output
-
                         document.getElementById('fee_live_perjam').value = data.fee_live_perjam || 0;
                         document.getElementById('fee_take_video_perjam').value = data.fee_take_video_perjam ||
-                            0;
+                        0;
                         document.getElementById('total_lama_sesi_live').value = data.total_lama_sesi_live || 0;
                         document.getElementById('total_lama_sesi_take_video').value = data
                             .total_lama_sesi_take_video || 0;
@@ -119,15 +131,14 @@
                             0;
                         document.getElementById('jumlah_total_omset').value = data.jumlah_total_omset || 0;
                         document.getElementById('rate_omset_perjam').value = data.rate_omset_perjam || 0;
-                        document.getElementById('total_gaji').value = data.total_gaji || 0;
+
+                        calculateTotalSalary();
                     })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
+                    .catch(error => console.error('Error:', error));
             }
         });
 
-        // Trigger calculation when periode dates are changed
+        document.getElementById('bonus').addEventListener('input', calculateTotalSalary);
         document.getElementById('periode_gaji_awal').addEventListener('change', function() {
             document.getElementById('talent_id').dispatchEvent(new Event('change'));
         });
