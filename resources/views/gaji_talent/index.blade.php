@@ -4,6 +4,8 @@
     <div class="container">
         <h2>Daftar Gaji Talent</h2>
 
+        <a href="{{ route('gaji-talent.create') }}" type="button" class="btn btn-primary mb-2">Tambah Data</a>
+
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">

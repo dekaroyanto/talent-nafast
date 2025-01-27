@@ -75,6 +75,8 @@
                             </li>
                             <li class="pc-item"><a class="pc-link" href="{{ route('sesi-talent.index') }}">Sesi
                                     Talent</a></li>
+                            <li class="pc-item"><a class="pc-link" href="{{ route('gaji-talent.index') }}">Gaji
+                                    Talent</a></li>
                         </ul>
                     </li>
                     <li class="pc-item">
