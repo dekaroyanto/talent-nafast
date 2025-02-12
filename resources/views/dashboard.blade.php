@@ -15,9 +15,9 @@
 
                 </div>
                 <span class="text-white d-block f-34 f-w-500 my-2">
-                    69
+                    {{ $talentcount }}
                 </span>
-                <p class="mb-0 opacity-100">Total Talent</p>
+                <p class="mb-0 opacity-100">Jumlah Talent</p>
             </div>
         </div>
     </div>
@@ -40,9 +40,9 @@
                         <div class="row">
                             <div class="col-8">
                                 <span class="text-white d-block f-34 f-w-500 my-2">
-                                    Rp.
+                                    {{ 'Rp ' . number_format($totalomset, 0, ',', '.') }}
                                 </span>
-                                <p class="mb-0 opacity-100">Total Omset Bulan Januari</p>
+                                <p class="mb-0 opacity-100">Total Omset Bulan {{ $currentMonth }}</p>
                             </div>
                         </div>
                     </div>
@@ -57,24 +57,48 @@
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class=" table table-striped">
+                    <table class="table table-striped text-center">
                         <thead>
                             <tr>
-                                <td>Nama Talent</td>
-                                <td>Jenis Sesi</td>
-                                <td>Waktu Mulai</td>
-                                <td>Waktu Selesai</td>
-                                <td>Lama Sesi</td>
+                                <th>Nama Talent</th>
+                                <th>Jenis Sesi</th>
+                                <th>Tanggal Waktu Mulai</th>
+                                <th>Tanggal Waktu Selesai</th>
+                                <th>Lama Sesi (jam)</th>
+                                <th>Total Omset</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>John Doe</td>
-                                <td>Take Video</td>
-                                <td>2023-01-01 10:00:00</td>
-                                <td>2023-01-01 11:00:00</td>
-                                <td>1 Jam</td>
-                            </tr>
+
+                            @forelse ($sesi as $item)
+                                <tr>
+                                    <td>{{ $item->talent->nama_talent }}</td>
+                                    <td>{{ ucfirst($item->jenis_sesi) }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($item->tanggal_waktu_mulai)->format('d M Y H:i') }}</td>
+
+                                    <td>{{ $item->tanggal_waktu_selesai ? \Carbon\Carbon::parse($item->tanggal_waktu_selesai)->format('d M Y H:i') : '-' }}
+                                    </td>
+                                    <td>{{ $item->lama_sesi ?? '-' }}</td>
+                                    <td>{{ 'Rp ' . number_format($item->total_omset, 0, ',', '.') }}</td>
+                                    <td class="d-flex gap-2 justify-content-center">
+
+                                        @if (!$item->tanggal_waktu_selesai)
+                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#editSesiModal{{ $item->id }}">Edit</button>
+                                        @else
+                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#editSesiModal{{ $item->id }}">Edit</button>
+                                        @endif
+                                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#deleteSesiModal{{ $item->id }}">Hapus</button>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr class="text-center">
+                                    <td colspan="6">Tidak ada data</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

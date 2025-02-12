@@ -75,9 +75,14 @@
                             </li>
                             <li class="pc-item"><a class="pc-link" href="{{ route('sesi-talent.index') }}">Sesi
                                     Talent</a></li>
-                            <li class="pc-item"><a class="pc-link" href="{{ route('gaji-talent.index') }}">Gaji
+                            <li class="pc-item"><a class="pc-link" href="{{ route('rekap') }}">Rekap
                                     Talent</a></li>
                         </ul>
+                    </li>
+
+                    <li class="pc-item">
+                        <a href="{{ route('gaji-talent.index') }}" class="pc-link"><span class="pc-micon"><i
+                                    class="ti ti-wallet"></i></span><span class="pc-mtext">Gaji Talent</span></a>
                     </li>
                     <li class="pc-item">
                         <a href="../other/sample-page.html" class="pc-link">

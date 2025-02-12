@@ -6,6 +6,7 @@ use App\Http\Controllers\TalentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GajiTalentController;
 use App\Http\Controllers\SesiTalentController;
+use App\Models\GajiTalent;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -37,6 +38,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('gaji-talent', GajiTalentController::class);
     Route::post('gaji-talent/calculate-salary', [GajiTalentController::class, 'calculateSalary'])->name('gaji-talent.calculate-salary');
+    Route::get('rekap', [GajiTalentController::class, 'rekapTalent'])->name('rekap');
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });

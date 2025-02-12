@@ -12,7 +12,6 @@
                     <table class="table table-striped text-center">
                         <thead>
                             <tr>
-                                <th>No</th>
                                 <th>Talent</th>
                                 <th>Periode Gaji</th>
                                 <th>Fee Live/Jam</th>
@@ -29,9 +28,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($gajiTalentList as $index => $gaji)
+                            @forelse ($gajiTalentList as $index => $gaji)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
                                     <td>{{ $gaji->talent->nama_talent }}</td>
                                     <td>{{ \Carbon\Carbon::parse($gaji->periode_gaji_awal)->format('j M Y') }} -
                                         {{ \Carbon\Carbon::parse($gaji->periode_gaji_akhir)->format('j M Y') }}</td>
@@ -53,11 +51,16 @@
                                             style="display:inline-block;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Delete</button>
                                         </form>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="13">Tidak ada data</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

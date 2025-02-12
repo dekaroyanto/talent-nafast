@@ -33,7 +33,7 @@ class GajiTalentController extends Controller
 
         GajiTalent::create($request->all());
 
-        return redirect()->route('gaji-talent.index');
+        return redirect()->route('gaji-talent.index')->with('success', 'Gaji Talent berhasil ditambahkan.');
     }
 
     public function edit($id)
@@ -54,13 +54,13 @@ class GajiTalentController extends Controller
         $gajiTalent = GajiTalent::findOrFail($id);
         $gajiTalent->update($request->all());
 
-        return redirect()->route('gaji-talent.index');
+        return redirect()->route('gaji-talent.index')->with('success', 'Gaji Talent berhasil diperbarui.');
     }
 
-    public function destroy($id)
+    public function rekapTalent()
     {
-        GajiTalent::findOrFail($id)->delete();
-        return redirect()->route('gaji-talent.index');
+        $talents = Talent::all();
+        return view('gaji_talent.rekap', compact('talents'));
     }
 
     // Function to calculate salary based on selected talent and period
@@ -100,5 +100,11 @@ class GajiTalentController extends Controller
             'rate_omset_perjam' => $rateOmsetPerJam,
             'total_gaji' => $totalGaji,
         ]);
+    }
+
+    public function destroy($id)
+    {
+        GajiTalent::findOrFail($id)->delete();
+        return redirect()->route('gaji-talent.index')->with('success', 'Gaji Talent berhasil dihapus.');
     }
 }
