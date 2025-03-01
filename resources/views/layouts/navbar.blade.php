@@ -84,12 +84,12 @@
                         <a href="{{ route('gaji-talent.index') }}" class="pc-link"><span class="pc-micon"><i
                                     class="ti ti-wallet"></i></span><span class="pc-mtext">Gaji Talent</span></a>
                     </li>
-                    <li class="pc-item">
+                    {{-- <li class="pc-item">
                         <a href="../other/sample-page.html" class="pc-link">
                             <span class="pc-micon"><i class="ti ti-mood-happy"></i></span>
                             <span class="pc-mtext">Users</span>
                         </a>
-                    </li>
+                    </li> --}}
 
                 </ul>
                 <div class="w-100 text-center">
