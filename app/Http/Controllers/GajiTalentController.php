@@ -12,22 +12,46 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class GajiTalentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Ambil semua data gaji talent dari database
-        $gajiTalentList = GajiTalent::with('talent')->get(); // Menyertakan relasi dengan tabel talent
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
 
-        return view('gaji_talent.index', compact('gajiTalentList'));
+        $query = GajiTalent::with('talent');
+
+        // Hanya filter jika kedua tanggal diisi
+        if ($startDate && $endDate) {
+            $query->whereBetween('periode_gaji_awal', [
+                Carbon::parse($startDate)->format('Y-m-d'),
+                Carbon::parse($endDate)->format('Y-m-d')
+            ]);
+        }
+
+        $gajiTalentList = $query->get();
+
+        return view('gaji_talent.index', compact('gajiTalentList', 'startDate', 'endDate'));
+    }
+
+
+
+    public function filter(Request $request)
+    {
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        $gajiTalentList = GajiTalent::with('talent')
+            ->whereBetween('periode_gaji_awal', [$startDate, $endDate])
+            ->get();
+
+        return view('gaji_talent.partial_table', compact('gajiTalentList'))->render();
     }
 
     public function exportExcel(Request $request)
     {
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
 
-        return Excel::download(new GajiTalentExport($request->start_date, $request->end_date), 'gaji_talent.xlsx');
+        return Excel::download(new GajiTalentExport($startDate, $endDate), 'Gaji_Talent_' . Carbon::now()->format('d-m-Y') . '.xlsx');
     }
 
     public function create()

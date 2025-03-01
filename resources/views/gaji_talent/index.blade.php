@@ -4,25 +4,35 @@
     <div class="container">
         <h2>Daftar Gaji Talent</h2>
 
-        <a href="{{ route('gaji-talent.create') }}" type="button" class="btn btn-primary mb-2">Tambah Data</a>
-        <form action="{{ route('gaji-talent.export-excel') }}" method="POST" class="mb-3">
-            @csrf
+        <!-- Form Filter Tanggal -->
+        <form id="filterForm" method="GET" action="{{ route('gaji-talent.index') }}">
             <div class="row">
                 <div class="col-md-4">
                     <label for="start_date">Tanggal Awal:</label>
-                    <input type="date" name="start_date" class="form-control" required>
+                    <input type="date" name="start_date" id="start_date" class="form-control"
+                        value="{{ request('start_date') }}">
                 </div>
                 <div class="col-md-4">
                     <label for="end_date">Tanggal Akhir:</label>
-                    <input type="date" name="end_date" class="form-control" required>
-                </div>
-                <div class="col-md-4 align-self-end">
-                    <button type="submit" class="btn btn-success">Export Excel</button>
+                    <input type="date" name="end_date" id="end_date" class="form-control"
+                        value="{{ request('end_date') }}">
                 </div>
             </div>
         </form>
+        <a href="{{ route('gaji-talent.index') }}" class="btn btn-secondary">Reset</a>
 
-        <div class="card">
+        <!-- Tombol Export Excel -->
+        <form action="{{ route('gaji-talent.export-excel') }}" method="POST" class="mt-3">
+            @csrf
+            <input type="hidden" name="start_date" value="{{ request('start_date') }}">
+            <input type="hidden" name="end_date" value="{{ request('end_date') }}">
+            <button type="submit" class="btn btn-success">Export Excel</button>
+        </form>
+
+
+
+        <!-- Tabel Data Gaji Talent -->
+        <div class="card mt-3">
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-striped text-center">
@@ -44,15 +54,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($gajiTalentList as $index => $gaji)
+                            @forelse ($gajiTalentList as $gaji)
                                 <tr>
                                     <td>{{ $gaji->talent->nama_talent }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($gaji->periode_gaji_awal)->format('j M Y') }} -
-                                        {{ \Carbon\Carbon::parse($gaji->periode_gaji_akhir)->format('j M Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($gaji->periode_gaji_awal)->translatedFormat('d F Y') }} -
+                                        {{ \Carbon\Carbon::parse($gaji->periode_gaji_akhir)->translatedFormat('d F Y') }}
+                                    </td>
                                     <td>Rp. {{ number_format($gaji->fee_live_perjam, 2) }}</td>
                                     <td>Rp. {{ number_format($gaji->fee_take_video_perjam, 2) }}</td>
-                                    <td>Rp. {{ number_format($gaji->total_lama_sesi_live, 2) }}</td>
-                                    <td>Rp. {{ number_format($gaji->total_lama_sesi_take_video, 2) }}</td>
+                                    <td>{{ number_format($gaji->total_lama_sesi_live, 2) }} Jam</td>
+                                    <td>{{ number_format($gaji->total_lama_sesi_take_video, 2) }} Jam</td>
                                     <td>Rp. {{ number_format($gaji->fee_live_didapat, 2) }}</td>
                                     <td>Rp. {{ number_format($gaji->fee_take_video_didapat, 2) }}</td>
                                     <td>Rp. {{ number_format($gaji->jumlah_total_omset, 2) }}</td>
@@ -82,6 +93,20 @@
                 </div>
             </div>
         </div>
-
     </div>
+
+    <script>
+        document.getElementById('start_date').addEventListener('change', filterData);
+        document.getElementById('end_date').addEventListener('change', filterData);
+
+        function filterData() {
+            let startDate = document.getElementById('start_date').value;
+            let endDate = document.getElementById('end_date').value;
+
+            // Submit form hanya jika kedua tanggal sudah dipilih
+            if (startDate && endDate) {
+                document.getElementById('filterForm').submit();
+            }
+        }
+    </script>
 @endsection
