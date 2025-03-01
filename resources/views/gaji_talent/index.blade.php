@@ -20,6 +20,7 @@
             </div>
         </form>
         <a href="{{ route('gaji-talent.index') }}" class="btn btn-secondary">Reset</a>
+        <a href="{{ route('gaji-talent.create') }}" class="btn btn-primary">Tambah Gaji</a>
 
         <!-- Tombol Export Excel -->
         <form action="{{ route('gaji-talent.export-excel') }}" method="POST" class="mt-3">
