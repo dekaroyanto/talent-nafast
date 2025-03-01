@@ -38,6 +38,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('gaji-talent', GajiTalentController::class);
     Route::post('gaji-talent/calculate-salary', [GajiTalentController::class, 'calculateSalary'])->name('gaji-talent.calculate-salary');
+    Route::post('gaji-talent/export-excel', [GajiTalentController::class, 'exportExcel'])->name('gaji-talent.export-excel');
+
     Route::get('rekap', [GajiTalentController::class, 'rekapTalent'])->name('rekap');
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');

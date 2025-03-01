@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\GajiTalent;
+use Carbon\Carbon;
 use App\Models\Talent;
+use App\Models\GajiTalent;
 use App\Models\SesiTalent;
 use Illuminate\Http\Request;
+use App\Exports\GajiTalentExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GajiTalentController extends Controller
 {
@@ -15,6 +18,16 @@ class GajiTalentController extends Controller
         $gajiTalentList = GajiTalent::with('talent')->get(); // Menyertakan relasi dengan tabel talent
 
         return view('gaji_talent.index', compact('gajiTalentList'));
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+        ]);
+
+        return Excel::download(new GajiTalentExport($request->start_date, $request->end_date), 'gaji_talent.xlsx');
     }
 
     public function create()
@@ -68,25 +81,28 @@ class GajiTalentController extends Controller
     {
         $talent = Talent::find($request->talent_id);
 
+        $startDate = Carbon::parse($request->periode_gaji_awal)->startOfDay();
+        $endDate = Carbon::parse($request->periode_gaji_akhir)->endOfDay();
+
         $sesiLive = SesiTalent::where('talent_id', $request->talent_id)
-            ->whereBetween('tanggal_waktu_mulai', [$request->periode_gaji_awal, $request->periode_gaji_akhir])
+            ->whereBetween('tanggal_waktu_mulai', [$startDate, $endDate])
             ->where('jenis_sesi', 'live')
             ->sum('lama_sesi');
 
         $sesiVideo = SesiTalent::where('talent_id', $request->talent_id)
-            ->whereBetween('tanggal_waktu_mulai', [$request->periode_gaji_awal, $request->periode_gaji_akhir])
+            ->whereBetween('tanggal_waktu_mulai', [$startDate, $endDate])
             ->where('jenis_sesi', 'take_video')
             ->sum('lama_sesi');
 
         $omsetTotal = SesiTalent::where('talent_id', $request->talent_id)
-            ->whereBetween('tanggal_waktu_mulai', [$request->periode_gaji_awal, $request->periode_gaji_akhir])
+            ->whereBetween('tanggal_waktu_mulai', [$startDate, $endDate])
             ->sum('total_omset');
 
         $feeLiveDidapat = round($talent->fee_live_perjam * $sesiLive, 2);
         $feeTakeVideoDidapat = round($talent->fee_take_video_perjam * $sesiVideo, 2);
         $rateOmsetPerJam = round(($omsetTotal / ($sesiLive ?: 1)), 2);
 
-        $bonus = $request->bonus ?? 0; // Pastikan bonus ada (bisa dari input manual)
+        $bonus = $request->bonus ?? 0;
         $totalGaji = round($feeLiveDidapat + $feeTakeVideoDidapat + $bonus, 2);
 
         return response()->json([

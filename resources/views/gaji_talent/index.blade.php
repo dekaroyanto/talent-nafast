@@ -5,6 +5,22 @@
         <h2>Daftar Gaji Talent</h2>
 
         <a href="{{ route('gaji-talent.create') }}" type="button" class="btn btn-primary mb-2">Tambah Data</a>
+        <form action="{{ route('gaji-talent.export-excel') }}" method="POST" class="mb-3">
+            @csrf
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="start_date">Tanggal Awal:</label>
+                    <input type="date" name="start_date" class="form-control" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="end_date">Tanggal Akhir:</label>
+                    <input type="date" name="end_date" class="form-control" required>
+                </div>
+                <div class="col-md-4 align-self-end">
+                    <button type="submit" class="btn btn-success">Export Excel</button>
+                </div>
+            </div>
+        </form>
 
         <div class="card">
             <div class="card-body">
