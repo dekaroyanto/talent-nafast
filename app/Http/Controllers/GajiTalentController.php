@@ -51,6 +51,10 @@ class GajiTalentController extends Controller
         $startDate = $request->start_date;
         $endDate = $request->end_date;
 
+        if (!$startDate || !$endDate) {
+            return redirect()->back()->with('error', 'Tanggal awal dan akhir harus diisi.');
+        }
+
         return Excel::download(new GajiTalentExport($startDate, $endDate), 'Gaji_Talent_' . Carbon::now()->format('d-m-Y') . '.xlsx');
     }
 
