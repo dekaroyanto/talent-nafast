@@ -34,6 +34,31 @@
                     </div>
 
                 </div>
+                <form method="GET" action="{{ route('dashboard') }}">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <select id="month" name="month" class="form-control">
+                                @foreach (range(1, 12) as $m)
+                                    <option value="{{ $m }}" {{ $m == $month ? 'selected' : '' }}>
+                                        {{ \Carbon\Carbon::createFromDate(null, $m, 1)->locale('id')->isoFormat('MMMM') }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select id="year" name="year" class="form-control">
+                                @foreach (range(date('Y') - 5, date('Y')) as $y)
+                                    <option value="{{ $y }}" {{ $y == $year ? 'selected' : '' }}>
+                                        {{ $y }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                        </div>
+                    </div>
+                </form>
+
                 <div class="tab-content" id="chart-tab-tabContent">
                     <div class="tab-pane show active" id="chart-tab-home" role="tabpanel"
                         aria-labelledby="chart-tab-home-tab" tabindex="0">
@@ -47,6 +72,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
