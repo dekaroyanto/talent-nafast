@@ -8,6 +8,8 @@ use App\Models\GajiTalent;
 use App\Models\SesiTalent;
 use Illuminate\Http\Request;
 use App\Exports\GajiTalentExport;
+use App\Imports\GajiTalentImport;
+use App\Exports\GajiTalentTemplate;
 use Maatwebsite\Excel\Facades\Excel;
 
 class GajiTalentController extends Controller
@@ -45,6 +47,22 @@ class GajiTalentController extends Controller
 
         return view('gaji_talent.partial_table', compact('gajiTalentList'))->render();
     }
+
+    public function importExcel(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls'
+    ]);
+
+    Excel::import(new GajiTalentImport, $request->file('file'));
+
+    return redirect()->route('gaji-talent.index')->with('success', 'Data berhasil diimpor!');
+}
+
+public function downloadTemplate()
+{
+    return Excel::download(new GajiTalentTemplate, 'template_gaji_talent.xlsx');
+}
 
     public function exportExcel(Request $request)
     {

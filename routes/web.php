@@ -6,7 +6,7 @@ use App\Http\Controllers\TalentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GajiTalentController;
 use App\Http\Controllers\SesiTalentController;
-use App\Models\GajiTalent;
+// use App\Models\GajiTalent;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -36,10 +36,13 @@ Route::middleware('auth')->group(function () {
     Route::put('/sesi-talent/{sesiTalent}', [SesiTalentController::class, 'update'])->name('sesi-talent.update');
     Route::delete('/sesi-talent/{sesiTalent}', [SesiTalentController::class, 'destroy'])->name('sesi-talent.destroy');
 
-    Route::resource('gaji-talent', GajiTalentController::class);
+    Route::resource('gaji-talent', GajiTalentController::class)->except(['show']);
     Route::post('gaji-talent/calculate-salary', [GajiTalentController::class, 'calculateSalary'])->name('gaji-talent.calculate-salary');
     Route::get('gaji-talent/filter', [GajiTalentController::class, 'filter'])->name('gaji-talent.filter');
     Route::post('gaji-talent/export-excel', [GajiTalentController::class, 'exportExcel'])->name('gaji-talent.export-excel');
+    Route::post('gaji-talent/import-excel', [GajiTalentController::class, 'importExcel'])->name('gaji-talent.import-excel');
+    Route::get('gaji-talent/template-excel', [GajiTalentController::class, 'downloadTemplate'])->name('gaji-talent.template-excel');
+
 
     Route::get('rekap', [GajiTalentController::class, 'rekapTalent'])->name('rekap');
 

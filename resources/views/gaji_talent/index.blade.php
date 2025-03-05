@@ -4,6 +4,27 @@
     <div class="container">
         <h2>Daftar Gaji Talent</h2>
 
+        <!-- Form Import Excel -->
+        <div class="card mb-3">
+            <div class="card-body">
+                <form action="{{ route('gaji-talent.import-excel') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row align-items-center d-flex">
+                        <div class="col-md-4">
+                            <input type="file" name="file" class="form-control" accept=".xlsx, .xls" required>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary">Import Excel</button>
+                            <a href="{{ route('gaji-talent.template-excel') }}" class="btn btn-success">Download Template</a>
+                        </div>
+                        <div class="col-md-4">
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <!-- Form Filter Tanggal -->
         <form id="filterForm" method="GET" action="{{ route('gaji-talent.index') }}">
             <div class="row">

@@ -1,122 +1,152 @@
-<!-- resources/views/gaji_talent/create.blade.php -->
 @extends('layouts.navbar')
 
 @section('content')
     <div class="container">
-        <h1>Form Gaji Talent</h1>
-        <form action="{{ route('gaji-talent.store') }}" method="POST">
-            @csrf
-            <div class="form-group">
-                <label for="talent_id">Talent</label>
-                <select class="form-control" id="talent_id" name="talent_id">
-                    <option value="">Pilih Talent</option>
-                    @foreach ($talents as $talent)
-                        <option value="{{ $talent->id }}" data-fee-live="{{ $talent->fee_live_perjam }}"
-                            data-fee-video="{{ $talent->fee_take_video_perjam }}">{{ $talent->nama_talent }}</option>
-                    @endforeach
-                </select>
-            </div>
+        <h2>Create Gaji Talent</h2>
+        <div class="card">
+            <div class="card-body">
+                <form action="{{ route('gaji-talent.update', $gajiTalent->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group">
+                        <label for="talent_id">Talent</label>
+                        <select name="talent_id" id="talent_id" class="form-control">
+                            <option value="">Select Talent</option>
+                            @foreach ($talents as $talent)
+                            <option value="{{ $talent->id }}" {{ $talent->id == $gajiTalent->talent_id ? 'selected' : '' }}>
+                                {{ $talent->nama_talent }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="periode_gaji_awal">Periode Gaji Awal</label>
+                        <input type="date" class="form-control" name="periode_gaji_awal" id="periode_gaji_awal" value="{{ $gajiTalent->periode_gaji_awal }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="periode_gaji_akhir">Periode Gaji Akhir</label>
+                        <input type="date" class="form-control" name="periode_gaji_akhir" id="periode_gaji_akhir"
+                            required value="{{ $gajiTalent->periode_gaji_akhir }}">
+                    </div>
 
-            <div class="form-group">
-                <label for="periode_awal">Periode Awal</label>
-                <input type="date" class="form-control" id="periode_awal" name="periode_awal" required>
-            </div>
+                    <h4>Perhitungan Gaji Talent</h4>
+                    <div class="form-floating mb-2">
+                        <input type="number" name="fee_live_perjam" id="fee_live_perjam" class="form-control" readonly value="{{ $gajiTalent->fee_live_perjam }}">
+                        <label for="fee_live_perjam">Fee Live per Jam</label>
+                    </div>
 
-            <div class="form-group">
-                <label for="periode_akhir">Periode Akhir</label>
-                <input type="date" class="form-control" id="periode_akhir" name="periode_akhir" required>
-            </div>
+                    <div class="form-floating mb-2">
+                        <input type="number" name="fee_take_video_perjam" id="fee_take_video_perjam" class="form-control"
+                            readonly value="{{ $gajiTalent->fee_take_video_perjam }}">
+                        <label for="fee_take_video_perjam">Fee Take Video per Jam</label>
+                    </div>
 
-            <div class="form-group">
-                <label for="fee_live_perjam">Fee Live Per Jam</label>
-                <input type="number" class="form-control" id="fee_live_perjam" name="fee_live_perjam" readonly>
-            </div>
+                    <div class="form-floating mb-2">
+                        <input type="number" name="total_lama_sesi_live" id="total_lama_sesi_live" class="form-control"
+                            readonly value="{{ $gajiTalent->total_lama_sesi_live }}">
+                        <label for="total_lama_sesi_live">Total Lama Sesi Live</label>
+                    </div>
 
-            <div class="form-group">
-                <label for="fee_take_video_perjam">Fee Take Video Per Jam</label>
-                <input type="number" class="form-control" id="fee_take_video_perjam" name="fee_take_video_perjam" readonly>
-            </div>
+                    <div class="form-floating mb-2">
+                        <input type="number" name="total_lama_sesi_take_video" id="total_lama_sesi_take_video"
+                            class="form-control" readonly value="{{ $gajiTalent->total_lama_sesi_take_video }}">
+                        <label for="total_lama_sesi_take_video">Total Lama Sesi Take Video</label>
+                    </div>
 
-            <div class="form-group">
-                <label for="total_lama_sesi_live">Total Lama Sesi Live</label>
-                <input type="number" class="form-control" id="total_lama_sesi_live" name="total_lama_sesi_live" readonly>
-            </div>
+                    <div class="form-floating mb-2">
+                        <input type="number" name="fee_live_didapat" id="fee_live_didapat" class="form-control" readonly value="{{ $gajiTalent->fee_live_didapat }}">
+                        <label for="fee_live_didapat">Fee Live Didapat</label>
+                    </div>
 
-            <div class="form-group">
-                <label for="total_lama_sesi_take_video">Total Lama Sesi Take Video</label>
-                <input type="number" class="form-control" id="total_lama_sesi_take_video" name="total_lama_sesi_take_video"
-                    readonly>
-            </div>
+                    <div class="form-floating mb-2">
+                        <input type="number" name="fee_take_video_didapat" id="fee_take_video_didapat" class="form-control"
+                            readonly value="{{ $gajiTalent->fee_take_video_didapat }}">
+                        <label for="fee_take_video_didapat">Fee Take Video Didapat</label>
+                    </div>
 
-            <div class="form-group">
-                <label for="jumlah_total_omset">Jumlah Total Omset</label>
-                <input type="number" class="form-control" id="jumlah_total_omset" name="jumlah_total_omset" readonly>
-            </div>
+                    <div class="form-floating mb-2">
+                        <input type="number" name="jumlah_total_omset" id="jumlah_total_omset" class="form-control"
+                            readonly value="{{ $gajiTalent->jumlah_total_omset }}">
+                        <label for="jumlah_total_omset">Jumlah Total Omset</label>
+                    </div>
 
-            <div class="form-group">
-                <label for="rate_omset_perjam">Rate Omset Per Jam</label>
-                <input type="number" class="form-control" id="rate_omset_perjam" name="rate_omset_perjam" readonly>
-            </div>
+                    <div class="form-floating mb-2">
+                        <input type="number" name="rate_omset_perjam" id="rate_omset_perjam" class="form-control" readonly value="{{ $gajiTalent->rate_omset_perjam }}">
+                        <label for="rate_omset_perjam">Rate Omset per Jam</label>
+                    </div>
 
-            <div class="form-group">
-                <label for="total_fee_live">Total Fee Live</label>
-                <input type="number" class="form-control" id="total_fee_live" name="total_fee_live" readonly>
-            </div>
+                    <div class="form-floating mb-2">
+                        <input type="number" name="bonus" id="bonus" class="form-control" step="0.01"
+                            value="{{ $gajiTalent->bonus }}">
+                        <label for="bonus">Bonus</label>
+                    </div>
 
-            <div class="form-group">
-                <label for="total_fee_take_video">Total Fee Take Video</label>
-                <input type="number" class="form-control" id="total_fee_take_video" name="total_fee_take_video" readonly>
-            </div>
+                    <div class="form-floating mb-2">
+                        <input type="number" name="total_gaji" id="total_gaji" class="form-control" readonly value="{{ $gajiTalent->total_gaji }}">
+                        <label for="total_gaji">Total Gaji</label>
+                    </div>
 
-            <div class="form-group">
-                <label for="gaji_talent">Gaji Talent</label>
-                <input type="number" class="form-control" id="gaji_talent" name="gaji_talent" readonly>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
             </div>
+        </div>
 
-            <button type="submit" class="btn btn-primary">Simpan</button>
-        </form>
     </div>
 
     <script>
+        const calculateTotalSalary = () => {
+            const feeLiveDidapat = parseFloat(document.getElementById('fee_live_didapat').value) || 0;
+            const feeTakeVideoDidapat = parseFloat(document.getElementById('fee_take_video_didapat').value) || 0;
+            const bonus = parseFloat(document.getElementById('bonus').value) || 0;
+
+            const totalGaji = feeLiveDidapat + feeTakeVideoDidapat + bonus;
+            document.getElementById('total_gaji').value = totalGaji.toFixed(2);
+        };
+
         document.getElementById('talent_id').addEventListener('change', function() {
-            var talentId = this.value;
-            var feeLivePerJam = this.selectedOptions[0].dataset.feeLive;
-            var feeTakeVideoPerJam = this.selectedOptions[0].dataset.feeVideo;
+            const talent_id = this.value;
+            const periode_awal = document.getElementById('periode_gaji_awal').value;
+            const periode_akhir = document.getElementById('periode_gaji_akhir').value;
 
-            document.getElementById('fee_live_perjam').value = feeLivePerJam;
-            document.getElementById('fee_take_video_perjam').value = feeTakeVideoPerJam;
-
-            updatePerhitungan(talentId);
-        });
-
-        document.getElementById('periode_awal').addEventListener('change', function() {
-            var talentId = document.getElementById('talent_id').value;
-            updatePerhitungan(talentId);
-        });
-
-        document.getElementById('periode_akhir').addEventListener('change', function() {
-            var talentId = document.getElementById('talent_id').value;
-            updatePerhitungan(talentId);
-        });
-
-        function updatePerhitungan(talentId) {
-            var periodeAwal = document.getElementById('periode_awal').value;
-            var periodeAkhir = document.getElementById('periode_akhir').value;
-
-            if (talentId && periodeAwal && periodeAkhir) {
-                fetch(`/api/gaji-talent/perhitungan/${talentId}?periode_awal=${periodeAwal}&periode_akhir=${periodeAkhir}`)
+            if (talent_id && periode_awal && periode_akhir) {
+                fetch('{{ route('gaji-talent.calculate-salary') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        },
+                        body: JSON.stringify({
+                            talent_id,
+                            periode_gaji_awal: periode_awal,
+                            periode_gaji_akhir: periode_akhir,
+                        }),
+                    })
                     .then(response => response.json())
                     .then(data => {
-                        document.getElementById('total_lama_sesi_live').value = data.total_lama_sesi_live;
-                        document.getElementById('total_lama_sesi_take_video').value = data.total_lama_sesi_take_video;
-                        document.getElementById('jumlah_total_omset').value = data.jumlah_total_omset;
-                        document.getElementById('rate_omset_perjam').value = data.rate_omset_perjam;
-                        document.getElementById('total_fee_live').value = data.total_fee_live;
-                        document.getElementById('total_fee_take_video').value = data.total_fee_take_video;
-                        document.getElementById('gaji_talent').value = data.gaji_talent;
+                        document.getElementById('fee_live_perjam').value = data.fee_live_perjam || 0;
+                        document.getElementById('fee_take_video_perjam').value = data.fee_take_video_perjam ||
+                        0;
+                        document.getElementById('total_lama_sesi_live').value = data.total_lama_sesi_live || 0;
+                        document.getElementById('total_lama_sesi_take_video').value = data
+                            .total_lama_sesi_take_video || 0;
+                        document.getElementById('fee_live_didapat').value = data.fee_live_didapat || 0;
+                        document.getElementById('fee_take_video_didapat').value = data.fee_take_video_didapat ||
+                            0;
+                        document.getElementById('jumlah_total_omset').value = data.jumlah_total_omset || 0;
+                        document.getElementById('rate_omset_perjam').value = data.rate_omset_perjam || 0;
+
+                        calculateTotalSalary();
                     })
                     .catch(error => console.error('Error:', error));
             }
-        }
+        });
+
+        document.getElementById('bonus').addEventListener('input', calculateTotalSalary);
+        document.getElementById('periode_gaji_awal').addEventListener('change', function() {
+            document.getElementById('talent_id').dispatchEvent(new Event('change'));
+        });
+        document.getElementById('periode_gaji_akhir').addEventListener('change', function() {
+            document.getElementById('talent_id').dispatchEvent(new Event('change'));
+        });
     </script>
 @endsection
