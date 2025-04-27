@@ -49,20 +49,20 @@ class GajiTalentController extends Controller
     }
 
     public function importExcel(Request $request)
-{
-    $request->validate([
-        'file' => 'required|mimes:xlsx,xls'
-    ]);
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls'
+        ]);
 
-    Excel::import(new GajiTalentImport, $request->file('file'));
+        Excel::import(new GajiTalentImport, $request->file('file'));
 
-    return redirect()->route('gaji-talent.index')->with('success', 'Data berhasil diimpor!');
-}
+        return redirect()->route('gaji-talent.index')->with('success', 'Data berhasil diimpor!');
+    }
 
-public function downloadTemplate()
-{
-    return Excel::download(new GajiTalentTemplate, 'template_gaji_talent.xlsx');
-}
+    public function downloadTemplate()
+    {
+        return Excel::download(new GajiTalentTemplate, 'template_gaji_talent.xlsx');
+    }
 
     public function exportExcel(Request $request)
     {
@@ -144,12 +144,29 @@ public function downloadTemplate()
             ->whereBetween('tanggal_waktu_mulai', [$startDate, $endDate])
             ->sum('total_omset');
 
+        $sesiTakeVideos = SesiTalent::where('talent_id', $request->talent_id)
+            ->whereBetween('tanggal_waktu_mulai', [$startDate, $endDate])
+            ->where('jenis_sesi', 'take_video')
+            ->get();
+
+        $totalVideo = $sesiTakeVideos->reduce(function ($carry, $sesi) {
+            if (is_array($sesi->list_video)) {
+                $validVideos = array_filter($sesi->list_video, function ($video) {
+                    return !is_null($video) && $video !== '';
+                });
+                return $carry + count($validVideos);
+            }
+            return $carry;
+        }, 0);
+
+        $feePervideoDidapat = round($talent->fee_pervideo * $totalVideo, 2);
+
         $feeLiveDidapat = round($talent->fee_live_perjam * $sesiLive, 2);
         $feeTakeVideoDidapat = round($talent->fee_take_video_perjam * $sesiVideo, 2);
         $rateOmsetPerJam = round(($omsetTotal / ($sesiLive ?: 1)), 2);
 
         $bonus = $request->bonus ?? 0;
-        $totalGaji = round($feeLiveDidapat + $feeTakeVideoDidapat + $bonus, 2);
+        $totalGaji = round($feeLiveDidapat + $feeTakeVideoDidapat + $feePervideoDidapat + $bonus, 2);
 
         return response()->json([
             'fee_live_perjam' => round($talent->fee_live_perjam, 2),
@@ -160,6 +177,9 @@ public function downloadTemplate()
             'fee_take_video_didapat' => $feeTakeVideoDidapat,
             'jumlah_total_omset' => round($omsetTotal, 2),
             'rate_omset_perjam' => $rateOmsetPerJam,
+            'total_video' => $totalVideo,
+            'fee_pervideo' => round($talent->fee_pervideo, 2),
+            'fee_pervideo_didapat' => $feePervideoDidapat,
             'total_gaji' => $totalGaji,
         ]);
     }

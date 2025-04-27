@@ -18,6 +18,10 @@ class SesiTalent extends Model
         'tanggal_waktu_selesai',
         'lama_sesi',
         'total_omset',
+        'list_video',
+    ];
+    protected $casts = [
+        'list_video' => 'array',
     ];
 
     public function talent()

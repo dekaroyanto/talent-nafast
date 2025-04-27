@@ -19,6 +19,7 @@ return new class extends Migration
             $table->timestamp('tanggal_waktu_selesai')->nullable();
             $table->float('lama_sesi', 8, 2)->nullable();
             $table->decimal('total_omset', 10, 2)->nullable();
+            $table->json('list_video')->nullable();
             $table->timestamps();
         });
     }

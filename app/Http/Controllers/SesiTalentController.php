@@ -70,7 +70,11 @@ class SesiTalentController extends Controller
             'tanggal_waktu_mulai' => 'required|date',
             'tanggal_waktu_selesai' => 'nullable|date|after:tanggal_waktu_mulai',
             'total_omset' => 'nullable|numeric',
+            'list_video' => 'nullable|array',
+            'list_video.*' => 'nullable|string|max:255',
         ]);
+
+        $validated['list_video'] = $request->list_video ?? [];
 
         // Update sesi talent
         $sesiTalent->update($validated);

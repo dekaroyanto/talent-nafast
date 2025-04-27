@@ -27,61 +27,93 @@
                     </div>
 
                     <h4>Perhitungan Gaji Talent</h4>
-                    <div class="form-floating mb-2">
-                        <input type="number" name="fee_live_perjam" id="fee_live_perjam" class="form-control" readonly>
-                        <label for="fee_live_perjam">Fee Live per Jam</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-2">
+                                <input type="number" name="fee_live_perjam" id="fee_live_perjam" class="form-control"
+                                    readonly>
+                                <label for="fee_live_perjam">Fee Live per Jam</label>
+                            </div>
+
+                            <div class="form-floating mb-2">
+                                <input type="number" name="fee_take_video_perjam" id="fee_take_video_perjam"
+                                    class="form-control" readonly>
+                                <label for="fee_take_video_perjam">Fee Take Video per Jam</label>
+                            </div>
+
+                            <div class="form-floating mb-2">
+                                <input type="number" name="fee_pervideo" id="fee_pervideo" class="form-control" readonly>
+                                <label for="fee_pervideo">Fee per Video</label>
+                            </div>
+
+                            <div class="form-floating mb-2">
+                                <input type="number" name="fee_live_didapat" id="fee_live_didapat" class="form-control"
+                                    readonly>
+                                <label for="fee_live_didapat">Fee Live Didapat</label>
+                            </div>
+
+                            <div class="form-floating mb-2">
+                                <input type="number" name="fee_take_video_didapat" id="fee_take_video_didapat"
+                                    class="form-control" readonly>
+                                <label for="fee_take_video_didapat">Fee Take Video Didapat</label>
+                            </div>
+
+                            <div class="form-floating mb-2">
+                                <input type="number" name="fee_pervideo_didapat" id="fee_pervideo_didapat"
+                                    class="form-control" readonly>
+                                <label for="fee_pervideo_didapat">Fee per Video Didapat</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating mb-2">
+                                <input type="number" name="total_lama_sesi_live" id="total_lama_sesi_live"
+                                    class="form-control" readonly>
+                                <label for="total_lama_sesi_live">Total Lama Sesi Live</label>
+                            </div>
+
+                            <div class="form-floating mb-2">
+                                <input type="number" name="total_lama_sesi_take_video" id="total_lama_sesi_take_video"
+                                    class="form-control" readonly>
+                                <label for="total_lama_sesi_take_video">Total Lama Sesi Take Video</label>
+                            </div>
+
+                            <div class="form-floating mb-2">
+                                <input type="number" name="total_video" id="total_video" class="form-control" readonly>
+                                <label for="total_video">Total Video</label>
+                            </div>
+
+
+
+
+
+                            <div class="form-floating mb-2">
+                                <input type="number" name="jumlah_total_omset" id="jumlah_total_omset" class="form-control"
+                                    readonly>
+                                <label for="jumlah_total_omset">Jumlah Total Omset</label>
+                            </div>
+
+                            <div class="form-floating mb-2">
+                                <input type="number" name="rate_omset_perjam" id="rate_omset_perjam" class="form-control"
+                                    readonly>
+                                <label for="rate_omset_perjam">Rate Omset per Jam</label>
+                            </div>
+
+                            <div class="form-floating mb-2">
+                                <input type="number" name="bonus" id="bonus" class="form-control" step="0.01"
+                                    value="0">
+                                <label for="bonus">Bonus</label>
+                            </div>
+
+                            <div class="form-floating mb-2">
+                                <input type="number" name="total_gaji" id="total_gaji" class="form-control" readonly>
+                                <label for="total_gaji">Total Gaji</label>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-floating mb-2">
-                        <input type="number" name="fee_take_video_perjam" id="fee_take_video_perjam" class="form-control"
-                            readonly>
-                        <label for="fee_take_video_perjam">Fee Take Video per Jam</label>
-                    </div>
 
-                    <div class="form-floating mb-2">
-                        <input type="number" name="total_lama_sesi_live" id="total_lama_sesi_live" class="form-control"
-                            readonly>
-                        <label for="total_lama_sesi_live">Total Lama Sesi Live</label>
-                    </div>
 
-                    <div class="form-floating mb-2">
-                        <input type="number" name="total_lama_sesi_take_video" id="total_lama_sesi_take_video"
-                            class="form-control" readonly>
-                        <label for="total_lama_sesi_take_video">Total Lama Sesi Take Video</label>
-                    </div>
-
-                    <div class="form-floating mb-2">
-                        <input type="number" name="fee_live_didapat" id="fee_live_didapat" class="form-control" readonly>
-                        <label for="fee_live_didapat">Fee Live Didapat</label>
-                    </div>
-
-                    <div class="form-floating mb-2">
-                        <input type="number" name="fee_take_video_didapat" id="fee_take_video_didapat" class="form-control"
-                            readonly>
-                        <label for="fee_take_video_didapat">Fee Take Video Didapat</label>
-                    </div>
-
-                    <div class="form-floating mb-2">
-                        <input type="number" name="jumlah_total_omset" id="jumlah_total_omset" class="form-control"
-                            readonly>
-                        <label for="jumlah_total_omset">Jumlah Total Omset</label>
-                    </div>
-
-                    <div class="form-floating mb-2">
-                        <input type="number" name="rate_omset_perjam" id="rate_omset_perjam" class="form-control" readonly>
-                        <label for="rate_omset_perjam">Rate Omset per Jam</label>
-                    </div>
-
-                    <div class="form-floating mb-2">
-                        <input type="number" name="bonus" id="bonus" class="form-control" step="0.01"
-                            value="0">
-                        <label for="bonus">Bonus</label>
-                    </div>
-
-                    <div class="form-floating mb-2">
-                        <input type="number" name="total_gaji" id="total_gaji" class="form-control" readonly>
-                        <label for="total_gaji">Total Gaji</label>
-                    </div>
 
                     <button type="submit" class="btn btn-primary">Save</button>
                 </form>
@@ -94,9 +126,10 @@
         const calculateTotalSalary = () => {
             const feeLiveDidapat = parseFloat(document.getElementById('fee_live_didapat').value) || 0;
             const feeTakeVideoDidapat = parseFloat(document.getElementById('fee_take_video_didapat').value) || 0;
+            const feePervideoDidapat = parseFloat(document.getElementById('fee_pervideo_didapat').value) || 0;
             const bonus = parseFloat(document.getElementById('bonus').value) || 0;
 
-            const totalGaji = feeLiveDidapat + feeTakeVideoDidapat + bonus;
+            const totalGaji = feeLiveDidapat + feeTakeVideoDidapat + bonus + feePervideoDidapat;
             document.getElementById('total_gaji').value = totalGaji.toFixed(2);
         };
 
@@ -122,7 +155,7 @@
                     .then(data => {
                         document.getElementById('fee_live_perjam').value = data.fee_live_perjam || 0;
                         document.getElementById('fee_take_video_perjam').value = data.fee_take_video_perjam ||
-                        0;
+                            0;
                         document.getElementById('total_lama_sesi_live').value = data.total_lama_sesi_live || 0;
                         document.getElementById('total_lama_sesi_take_video').value = data
                             .total_lama_sesi_take_video || 0;
@@ -131,6 +164,10 @@
                             0;
                         document.getElementById('jumlah_total_omset').value = data.jumlah_total_omset || 0;
                         document.getElementById('rate_omset_perjam').value = data.rate_omset_perjam || 0;
+
+                        document.getElementById('total_video').value = data.total_video || 0;
+                        document.getElementById('fee_pervideo').value = data.fee_pervideo || 0;
+                        document.getElementById('fee_pervideo_didapat').value = data.fee_pervideo_didapat || 0;
 
                         calculateTotalSalary();
                     })

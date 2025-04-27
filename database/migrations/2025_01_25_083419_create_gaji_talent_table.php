@@ -22,8 +22,12 @@ return new class extends Migration
             $table->float('total_lama_sesi_take_video', 8, 2)->nullable();
             $table->decimal('fee_live_didapat', 10, 2)->nullable();
             $table->decimal('fee_take_video_didapat', 10, 2)->nullable();
+            $table->decimal('fee_pervideo', 10, 2)->nullable();
+            $table->integer('total_video')->nullable();
+            $table->decimal('fee_pervideo_didapat', 10, 2)->nullable();
             $table->decimal('jumlah_total_omset', 10, 2)->nullable();
             $table->decimal('rate_omset_perjam', 10, 2)->nullable();
+            $table->decimal('bonus', 10, 2)->nullable();
             $table->decimal('total_gaji', 10, 2)->nullable();
             $table->timestamps();
         });

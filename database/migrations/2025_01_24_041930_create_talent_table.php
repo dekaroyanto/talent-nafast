@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama_talent');
             $table->integer('fee_live_perjam');
             $table->integer('fee_take_video_perjam');
+            $table->decimal('fee_pervideo', 10, 2)->nullable();
             $table->timestamps();
         });
     }

@@ -23,6 +23,9 @@ class GajiTalent extends Model
         'rate_omset_perjam',
         'bonus',
         'total_gaji',
+        'total_video',
+        'fee_pervideo',
+        'fee_pervideo_didapat',
     ];
 
     public function talent()

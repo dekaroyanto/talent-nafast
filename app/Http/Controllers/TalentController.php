@@ -75,6 +75,7 @@ class TalentController extends Controller
             'nama_talent' => 'required|string|max:255',
             'fee_live_perjam' => 'required|numeric',
             'fee_take_video_perjam' => 'required|numeric',
+            'fee_pervideo' => 'required|numeric',
         ]);
 
         $talent->update($validated);

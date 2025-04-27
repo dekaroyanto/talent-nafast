@@ -5,7 +5,7 @@
         <h2>Daftar Gaji Talent</h2>
 
         <!-- Form Import Excel -->
-        <div class="card mb-3">
+        {{-- <div class="card mb-3">
             <div class="card-body">
                 <form action="{{ route('gaji-talent.import-excel') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -23,7 +23,7 @@
                     </div>
                 </form>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Form Filter Tanggal -->
         <form id="filterForm" method="GET" action="{{ route('gaji-talent.index') }}">
@@ -44,12 +44,12 @@
         <a href="{{ route('gaji-talent.create') }}" class="btn btn-primary">Tambah Gaji</a>
 
         <!-- Tombol Export Excel -->
-        <form action="{{ route('gaji-talent.export-excel') }}" method="POST" class="mt-3">
+        {{-- <form action="{{ route('gaji-talent.export-excel') }}" method="POST" class="mt-3">
             @csrf
             <input type="hidden" name="start_date" value="{{ request('start_date') }}">
             <input type="hidden" name="end_date" value="{{ request('end_date') }}">
             <button type="submit" class="btn btn-success">Export Excel</button>
-        </form>
+        </form> --}}
 
 
 

@@ -17,6 +17,7 @@
                                 <td>Nama Talent</td>
                                 <td>Fee Live Perjam</td>
                                 <td>Fee Take Video Perjam</td>
+                                <td>Fee Pervideo</td>
                                 <td>Aksi</td>
                             </tr>
                         </thead>
@@ -26,6 +27,7 @@
                                     <td>{{ $talent->nama_talent }}</td>
                                     <td>{{ 'Rp ' . number_format($talent->fee_live_perjam, 0, ',', '.') }}</td>
                                     <td>{{ 'Rp ' . number_format($talent->fee_take_video_perjam, 0, ',', '.') }}</td>
+                                    <td>{{ 'Rp ' . number_format($talent->fee_pervideo, 0, ',', '.') }}</td>
                                     <td class="d-flex gap-2 justify-content-center">
                                         <button class="btn btn-secondary" data-bs-toggle="modal"
                                             data-bs-target="#editModal{{ $talent->id }}">Edit</button>
@@ -140,6 +142,16 @@
                                     value="{{ old('fee_take_video_perjam', $talent->fee_take_video_perjam) }}">
                                 <label for="fee_take_video_perjam">Fee Take Video Perjam</label>
                                 @error('fee_take_video_perjam')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-floating mb-2">
+                                <input type="number" class="form-control @error('fee_pervideo') is-invalid @enderror"
+                                    name="fee_pervideo" id="fee_pervideo"
+                                    value="{{ old('fee_pervideo', $talent->fee_pervideo) }}">
+                                <label for="fee_pervideo">Fee Pervideo</label>
+                                @error('fee_pervideo')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

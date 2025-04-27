@@ -44,6 +44,7 @@
                                 <th>Tanggal Waktu Selesai</th>
                                 <th>Lama Sesi (jam)</th>
                                 <th>Total Omset</th>
+                                <th>Jumlah Video</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -59,17 +60,26 @@
                                     </td>
                                     <td>{{ $item->lama_sesi ?? '-' }}</td>
                                     <td>{{ 'Rp ' . number_format($item->total_omset, 0, ',', '.') }}</td>
-                                    <td class="d-flex gap-2 justify-content-center">
-
-                                        @if (!$item->tanggal_waktu_selesai)
-                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#editSesiModal{{ $item->id }}">Edit</button>
+                                    <td>
+                                        @if (!empty($item->list_video) && is_array($item->list_video))
+                                            {{ count(array_filter($item->list_video, fn($v) => !is_null($v) && $v !== '')) }}
                                         @else
-                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#editSesiModal{{ $item->id }}">Edit</button>
+                                            0
                                         @endif
+                                    </td>
+                                    <td class="d-flex gap-2 justify-content-center">
+                                        <button class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#detailSesiModal{{ $item->id }}">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#editSesiModal{{ $item->id }}">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
                                         <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#deleteSesiModal{{ $item->id }}">Hapus</button>
+                                            data-bs-target="#deleteSesiModal{{ $item->id }}">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             @empty
@@ -82,6 +92,73 @@
                 </div>
             </div>
         </div>
+
+        <!-- Detail Sesi Modal -->
+        @foreach ($sesi as $item)
+            <div class="modal fade" id="detailSesiModal{{ $item->id }}" tabindex="-1"
+                aria-labelledby="detailSesiModalLabel{{ $item->id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="detailSesiModalLabel{{ $item->id }}">Detail Sesi</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Nama Talent</label>
+                                <input type="text" class="form-control" value="{{ $item->talent->nama_talent }}"
+                                    readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Jenis Sesi</label>
+                                <input type="text" class="form-control" value="{{ ucfirst($item->jenis_sesi) }}"
+                                    readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Tanggal Waktu Mulai</label>
+                                <input type="text" class="form-control"
+                                    value="{{ \Carbon\Carbon::parse($item->tanggal_waktu_mulai)->format('d M Y H:i') }}"
+                                    readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Tanggal Waktu Selesai</label>
+                                <input type="text" class="form-control"
+                                    value="{{ $item->tanggal_waktu_selesai ? \Carbon\Carbon::parse($item->tanggal_waktu_selesai)->format('d M Y H:i') : '-' }}"
+                                    readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Total Omset</label>
+                                <input type="text" class="form-control"
+                                    value="{{ 'Rp ' . number_format($item->total_omset, 0, ',', '.') }}" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">List Video</label>
+                                @if (
+                                    !empty($item->list_video) &&
+                                        is_array($item->list_video) &&
+                                        array_filter($item->list_video, fn($v) => !is_null($v) && $v !== ''))
+                                    @foreach ($item->list_video as $video)
+                                        @if (!is_null($video) && $video !== '')
+                                            <a href="{{ $video }}" target="_blank"
+                                                class="d-block mb-2 text-decoration-none text-primary border border-1 p-2 rounded"
+                                                style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
+                                                title="{{ $video }}">
+                                                {{ $video }}
+                                            </a>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    <input type="text" class="form-control" value="Tidak ada video" readonly>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
 
         <!-- Add Sesi Modal -->
         <div class="modal fade" id="addSesiModal" tabindex="-1" aria-labelledby="addSesiModalLabel" aria-hidden="true">
@@ -135,7 +212,8 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="editSesiModalLabel{{ $item->id }}">Edit Sesi</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
                         <form action="{{ route('sesi-talent.update', $item->id) }}" method="POST">
                             @csrf
@@ -180,6 +258,29 @@
                                         class="form-control" value="{{ old('total_omset', $item->total_omset) }}"
                                         required>
                                 </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">List Video</label>
+                                    <div id="list-video-wrapper-{{ $item->id }}">
+                                        @if (!empty($item->list_video))
+                                            @foreach ($item->list_video as $index => $video)
+                                                <div class="input-group mb-2">
+                                                    <input type="text" name="list_video[]" class="form-control"
+                                                        value="{{ $video }}" placeholder="Nama video...">
+                                                    <button type="button" class="btn btn-danger remove-video">X</button>
+                                                </div>
+                                            @endforeach
+                                        @else
+                                            <div class="input-group mb-2">
+                                                <input type="text" name="list_video[]" class="form-control"
+                                                    placeholder="Nama video...">
+                                                <button type="button" class="btn btn-danger remove-video">X</button>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <button type="button" class="btn btn-secondary"
+                                        onclick="addVideoField({{ $item->id }})">+ Tambah Video</button>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -188,6 +289,24 @@
                         </form>
                     </div>
                 </div>
+                <script>
+                    function addVideoField(id) {
+                        const wrapper = document.getElementById(`list-video-wrapper-${id}`);
+                        const div = document.createElement('div');
+                        div.classList.add('input-group', 'mb-2');
+                        div.innerHTML = `
+                            <input type="text" name="list_video[]" class="form-control" placeholder="Nama video...">
+                            <button type="button" class="btn btn-danger remove-video">X</button>
+                        `;
+                        wrapper.appendChild(div);
+                    }
+
+                    document.addEventListener('click', function(e) {
+                        if (e.target && e.target.classList.contains('remove-video')) {
+                            e.target.closest('.input-group').remove();
+                        }
+                    });
+                </script>
             </div>
         @endforeach
 
