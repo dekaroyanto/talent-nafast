@@ -16,10 +16,12 @@
                             @endforeach
                         </select>
                     </div>
+
                     <div class="form-group">
                         <label for="periode_gaji_awal">Periode Gaji Awal</label>
                         <input type="date" class="form-control" name="periode_gaji_awal" id="periode_gaji_awal" required>
                     </div>
+
                     <div class="form-group">
                         <label for="periode_gaji_akhir">Periode Gaji Akhir</label>
                         <input type="date" class="form-control" name="periode_gaji_akhir" id="periode_gaji_akhir"
@@ -79,13 +81,18 @@
                             </div>
 
                             <div class="form-floating mb-2">
-                                <input type="number" name="total_video" id="total_video" class="form-control" readonly>
+                                <input type="number" name="total_video" id="total_video" class="form-control"
+                                    min="0">
                                 <label for="total_video">Total Video</label>
                             </div>
 
-
-
-
+                            <div class="mb-3">
+                                <label for="list_video">List Video</label>
+                                <div id="list_video_container"></div>
+                                <button type="button" class="btn btn-sm btn-success mt-2" id="add_video_btn">+ Add
+                                    Video</button>
+                            </div>
+                            <input type="hidden" name="list_video_json" id="list_video_json">
 
                             <div class="form-floating mb-2">
                                 <input type="number" name="jumlah_total_omset" id="jumlah_total_omset" class="form-control"
@@ -112,26 +119,29 @@
                         </div>
                     </div>
 
-
-
-
                     <button type="submit" class="btn btn-primary">Save</button>
                 </form>
             </div>
         </div>
-
     </div>
 
     <script>
         const calculateTotalSalary = () => {
             const feeLiveDidapat = parseFloat(document.getElementById('fee_live_didapat').value) || 0;
             const feeTakeVideoDidapat = parseFloat(document.getElementById('fee_take_video_didapat').value) || 0;
-            const feePervideoDidapat = parseFloat(document.getElementById('fee_pervideo_didapat').value) || 0;
             const bonus = parseFloat(document.getElementById('bonus').value) || 0;
 
-            const totalGaji = feeLiveDidapat + feeTakeVideoDidapat + bonus + feePervideoDidapat;
+            const feePerVideo = parseFloat(document.getElementById('fee_pervideo').value) || 0;
+            const totalVideo = parseFloat(document.getElementById('total_video').value) || 0;
+            const feePervideoDidapat = feePerVideo * totalVideo;
+            document.getElementById('fee_pervideo_didapat').value = feePervideoDidapat.toFixed(2);
+
+            const totalGaji = feeLiveDidapat + feeTakeVideoDidapat + feePervideoDidapat + bonus;
             document.getElementById('total_gaji').value = totalGaji.toFixed(2);
         };
+
+        // Update calculate when total_video is manually changed
+        document.getElementById('total_video').addEventListener('input', calculateTotalSalary);
 
         document.getElementById('talent_id').addEventListener('change', function() {
             const talent_id = this.value;
@@ -155,7 +165,7 @@
                     .then(data => {
                         document.getElementById('fee_live_perjam').value = data.fee_live_perjam || 0;
                         document.getElementById('fee_take_video_perjam').value = data.fee_take_video_perjam ||
-                            0;
+                        0;
                         document.getElementById('total_lama_sesi_live').value = data.total_lama_sesi_live || 0;
                         document.getElementById('total_lama_sesi_take_video').value = data
                             .total_lama_sesi_take_video || 0;
@@ -164,10 +174,44 @@
                             0;
                         document.getElementById('jumlah_total_omset').value = data.jumlah_total_omset || 0;
                         document.getElementById('rate_omset_perjam').value = data.rate_omset_perjam || 0;
-
-                        document.getElementById('total_video').value = data.total_video || 0;
                         document.getElementById('fee_pervideo').value = data.fee_pervideo || 0;
                         document.getElementById('fee_pervideo_didapat').value = data.fee_pervideo_didapat || 0;
+                        document.getElementById('total_video').value = data.total_video || 0;
+
+                        // Tambahkan bagian ini untuk populate list video
+                        if (data.list_video && Array.isArray(data.list_video)) {
+                            const container = document.getElementById('list_video_container');
+                            container.innerHTML = ''; // bersihkan dulu
+
+                            data.list_video.forEach(video => {
+                                const inputGroup = document.createElement('div');
+                                inputGroup.classList.add('input-group', 'mb-2');
+
+                                const input = document.createElement('input');
+                                input.type = 'text';
+                                input.classList.add('form-control');
+                                input.name = 'list_video[]';
+                                input.placeholder = 'Nama Video';
+                                input.value = video;
+
+                                const button = document.createElement('button');
+                                button.type = 'button';
+                                button.classList.add('btn', 'btn-danger');
+                                button.innerText = 'Remove';
+                                button.onclick = function() {
+                                    container.removeChild(inputGroup);
+                                    updateListVideoJson();
+                                };
+
+                                input.oninput = updateListVideoJson;
+
+                                inputGroup.appendChild(input);
+                                inputGroup.appendChild(button);
+                                container.appendChild(inputGroup);
+                            });
+
+                            updateListVideoJson();
+                        }
 
                         calculateTotalSalary();
                     })
@@ -182,5 +226,46 @@
         document.getElementById('periode_gaji_akhir').addEventListener('change', function() {
             document.getElementById('talent_id').dispatchEvent(new Event('change'));
         });
+
+        // Dynamic Add List Video
+        document.getElementById('add_video_btn').addEventListener('click', function() {
+            const container = document.getElementById('list_video_container');
+
+            const inputGroup = document.createElement('div');
+            inputGroup.classList.add('input-group', 'mb-2');
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.classList.add('form-control');
+            input.name = 'list_video[]';
+            input.placeholder = 'Nama Video';
+
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.classList.add('btn', 'btn-danger');
+            button.innerText = 'Remove';
+            button.onclick = function() {
+                container.removeChild(inputGroup);
+                updateListVideoJson();
+            };
+
+            input.oninput = updateListVideoJson;
+
+            inputGroup.appendChild(input);
+            inputGroup.appendChild(button);
+            container.appendChild(inputGroup);
+
+            updateListVideoJson();
+        });
+
+        function updateListVideoJson() {
+            const inputs = document.querySelectorAll('#list_video_container input');
+            const values = Array.from(inputs).map(input => input.value).filter(val => val.trim() !== '');
+            document.getElementById('list_video_json').value = JSON.stringify(values);
+
+            // Update total video automatically from list_video
+            document.getElementById('total_video').value = values.length;
+            calculateTotalSalary();
+        }
     </script>
 @endsection

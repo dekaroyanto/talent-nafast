@@ -181,6 +181,13 @@ class GajiTalentController extends Controller
             'fee_pervideo' => round($talent->fee_pervideo, 2),
             'fee_pervideo_didapat' => $feePervideoDidapat,
             'total_gaji' => $totalGaji,
+
+            // Tambahkan ini untuk mengirim semua list videonya
+            'list_video' => $sesiTakeVideos->flatMap(function ($sesi) {
+                return is_array($sesi->list_video) ? array_filter($sesi->list_video, function ($video) {
+                    return !is_null($video) && $video !== '';
+                }) : [];
+            })->values(), // ambil semua list video dari semua sesi
         ]);
     }
 
