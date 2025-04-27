@@ -19,7 +19,7 @@ class DashboardController extends Controller
         // Query data sesuai filter
         $talentcount = Talent::count();
         $sesi = SesiTalent::with('talent')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('tanggal_waktu_mulai', 'desc')
             ->take(3)
             ->get();
         $totalomset = SesiTalent::whereMonth('created_at', $month)
