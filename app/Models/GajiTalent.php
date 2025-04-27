@@ -26,6 +26,11 @@ class GajiTalent extends Model
         'total_video',
         'fee_pervideo',
         'fee_pervideo_didapat',
+        'list_video',
+    ];
+
+    protected $casts = [
+        'list_video' => 'array',
     ];
 
     public function talent()
