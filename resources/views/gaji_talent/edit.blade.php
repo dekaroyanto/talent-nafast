@@ -14,7 +14,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="talent_id" class="form-label">Talent</label>
-                                <select name="talent_id" id="talent_id" class="form-select">
+                                <select name="talent_id" id="talent_id" class="form-select" style="pointer-events: none">
                                     <option value="">Select Talent</option>
                                     @foreach ($talents as $talent)
                                         <option value="{{ $talent->id }}"
@@ -30,7 +30,7 @@
                             <div class="form-group">
                                 <label for="periode_gaji_awal" class="form-label">Periode Awal</label>
                                 <input type="date" class="form-control" name="periode_gaji_awal" id="periode_gaji_awal"
-                                    value="{{ $gajiTalent->periode_gaji_awal }}" required>
+                                    value="{{ $gajiTalent->periode_gaji_awal }}" readonly>
                             </div>
                         </div>
 
@@ -38,7 +38,7 @@
                             <div class="form-group">
                                 <label for="periode_gaji_akhir" class="form-label">Periode Akhir</label>
                                 <input type="date" class="form-control" name="periode_gaji_akhir" id="periode_gaji_akhir"
-                                    value="{{ $gajiTalent->periode_gaji_akhir }}" required>
+                                    value="{{ $gajiTalent->periode_gaji_akhir }}" readonly>
                             </div>
                         </div>
                     </div>
