@@ -39,9 +39,6 @@
                         </div>
                     </div>
 
-                    <!-- Salary Calculation Section -->
-                    <h4 class="mb-3 border-bottom pb-2">Perhitungan Gaji Talent</h4>
-
                     <div class="row">
                         <!-- Left Column -->
                         <div class="col-md-6">
@@ -120,7 +117,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-floating mb-3">
+                    <div class="form-floating mb-3" style="display: none">
                         <input type="number" name="total_gaji" id="total_gaji" class="form-control fw-bold" readonly>
                         <label for="total_gaji">Total Gaji</label>
                     </div>
@@ -213,22 +210,30 @@
                             const container = document.getElementById('list_video_container');
                             container.innerHTML = '';
 
-                            data.list_video.forEach(video => {
-                                const inputGroup = document.createElement('div');
-                                inputGroup.classList.add('input-group', 'mb-2');
+                            data.list_video.forEach(videoUrl => {
+                                const div = document.createElement('div');
+                                div.classList.add('mb-2', 'p-2', 'border', 'rounded', 'bg-light');
 
                                 const link = document.createElement('a');
-                                link.href = video;
-                                link.textContent = video;
-                                link.classList.add('form-control', 'mb-2');
-                                link.target = '_blank'; // Biar kliknya buka tab baru
-                                link.style.textDecoration = 'none';
+                                link.href = videoUrl;
+                                link.target = '_blank';
+                                link.textContent = videoUrl;
+                                link.classList.add('d-block', 'text-primary', 'text-decoration-none');
 
-                                inputGroup.appendChild(link);
-                                container.appendChild(inputGroup);
+                                // Hover effect
+                                link.addEventListener('mouseover', () => {
+                                    link.style.textDecoration = 'underline';
+                                });
+                                link.addEventListener('mouseout', () => {
+                                    link.style.textDecoration = 'none';
+                                });
+
+                                div.appendChild(link);
+                                container.appendChild(div);
                             });
 
-                            updateListVideoJson();
+                            document.getElementById('list_video_json').value = JSON.stringify(data.list_video);
+                            document.getElementById('total_video').value = data.list_video.length;
                         }
 
                         calculateTotalSalary();
@@ -256,7 +261,6 @@
             input.classList.add('form-control');
             input.name = 'list_video[]';
             input.placeholder = 'Nama Video';
-            input.readOnly = true;
 
             input.oninput = updateListVideoJson;
 
